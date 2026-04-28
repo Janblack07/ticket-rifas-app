@@ -15,3 +15,10 @@ export interface Ticket {
   qrPayload: string;
   signature: string;
 }
+
+export interface GenerateTicketPayload {
+  digits: TicketDigits;
+  number: string;
+  amount: number;
+  playDate: string;
+}

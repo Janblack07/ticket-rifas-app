@@ -21,4 +21,13 @@ export class CryptoService {
   generateSessionToken(): string {
     return uuidv4();
   }
+
+  generateId(): string {
+    return uuidv4();
+  }
+
+  signPayload(payload: unknown, secretKey: string): string {
+    const rawPayload = JSON.stringify(payload);
+    return CryptoJS.HmacSHA256(rawPayload, secretKey).toString();
+  }
 }

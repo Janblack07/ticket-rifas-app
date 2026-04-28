@@ -1,13 +1,144 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>generate-ticket</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="page-container generate-page">
+    <header class="generate-header">
+      <button type="button" class="icon-back-button" (click)="goHome()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">generate-ticket</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <img
+        src="/assets/brand/logo4ases.png"
+        alt="24 Ases"
+        class="generate-logo"
+      />
+
+      <span class="header-spacer"></span>
+    </header>
+
+    <section class="app-card generate-card">
+      <div class="title-row">
+        <div>
+          <p class="eyebrow">Nuevo ticket</p>
+          <h1 class="app-title">Generar ticket</h1>
+          <p class="app-subtitle">
+            Completa los datos para crear un ticket válido por
+            {{ settings.ticketValidityDays }} días.
+          </p>
+        </div>
+
+        <div class="title-icon">
+          <ion-icon name="ticket-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Datos de la jugada</h2>
+
+        <div class="form-field">
+          <label class="form-label">Tipo de número</label>
+          <ion-item>
+            <ion-select
+              name="digits"
+              ngDefaultControl
+              [(ngModel)]="digits"
+              interface="popover"
+              (ionChange)="onDigitsChange()"
+            >
+              <ion-select-option [value]="2">2 dígitos: 00 al 99</ion-select-option>
+              <ion-select-option [value]="3">3 dígitos: 000 al 099</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">
+            Número jugado
+            <span>
+              {{ digits === 2 ? '00 - 99' : '000 - 099' }}
+            </span>
+          </label>
+
+          <ion-item>
+            <ion-input
+              name="number"
+              ngDefaultControl
+              [(ngModel)]="number"
+              type="tel"
+              inputmode="numeric"
+              [maxlength]="digits"
+              [placeholder]="digits === 2 ? 'Ej: 23' : 'Ej: 023'"
+            ></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Valor apostado</label>
+          <ion-item>
+            <ion-input
+              name="amount"
+              ngDefaultControl
+              [(ngModel)]="amount"
+              type="number"
+              min="0.01"
+              step="0.25"
+              placeholder="Ej: 1.00"
+            ></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Fecha de juego</label>
+          <ion-item>
+            <ion-input
+              name="playDate"
+              ngDefaultControl
+              [(ngModel)]="playDate"
+              type="date"
+            ></ion-input>
+          </ion-item>
+        </div>
+      </div>
+
+      <div class="preview-box">
+        <div>
+          <span>Vista rápida</span>
+          <strong>#{{ normalizedPreviewNumber }}</strong>
+          <small>Valor: ${{ amount || 0 | number:'1.2-2' }}</small>
+        </div>
+
+        <div class="preview-icon">
+          <ion-icon name="cash-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Premios calculados</h2>
+        <p class="section-help">
+          Los premios se multiplican automáticamente por el valor apostado.
+        </p>
+
+        <div class="prize-list">
+          @for (prize of calculatedPrizes; track prize.name) {
+            <div class="prize-item">
+              <span>{{ prize.name }}</span>
+              <strong>${{ prize.amountToPay | number:'1.2-2' }}</strong>
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (errorMessage) {
+        <ion-text color="danger">
+          <p class="error-message">{{ errorMessage }}</p>
+        </ion-text>
+      }
+
+      <ion-button
+        expand="block"
+        class="primary-button generate-button"
+        (click)="generate()"
+      >
+        Generar ticket
+      </ion-button>
+    </section>
+  </div>
 </ion-content>

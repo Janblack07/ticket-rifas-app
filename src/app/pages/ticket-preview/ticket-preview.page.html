@@ -1,13 +1,171 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>ticket-preview</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="page-container preview-page">
+    <header class="screen-header no-print">
+      <button type="button" class="icon-back-button" (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">ticket-preview</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <img
+        src="/assets/brand/logo4ases.png"
+        alt="24 Ases"
+        class="screen-logo"
+      />
+
+      <span class="header-spacer"></span>
+    </header>
+
+    <section class="app-card preview-card no-print">
+      <div class="title-row">
+        <div>
+          <p class="eyebrow">Ticket generado</p>
+          <h1 class="app-title">Vista previa</h1>
+          <p class="app-subtitle">
+            Revisa el ticket antes de imprimirlo.
+          </p>
+        </div>
+
+        <div class="title-icon">
+          <ion-icon name="ticket-outline"></ion-icon>
+        </div>
+      </div>
+    </section>
+
+    @if (ticket) {
+      <section class="ticket-print-area">
+        <div
+          id="ticketReceipt"
+          class="ticket-receipt"
+          [class.paper-58]="settings().paperSize === '58mm'"
+          [class.paper-80]="settings().paperSize === '80mm'"
+        >
+          @if (settings().showWatermark) {
+            <img
+              src="/assets/brand/cartas.png"
+              alt="Marca de agua"
+              class="ticket-watermark"
+            />
+          }
+
+          <div class="ticket-content">
+            @if (settings().showLogo) {
+              <img
+                src="/assets/brand/logo4ases.png"
+                alt="24 Ases"
+                class="ticket-logo"
+              />
+            }
+
+            <h2 class="ticket-business">
+              {{ ticket.businessName }}
+            </h2>
+
+            <p class="ticket-subtitle">TICKET DE RIFA</p>
+
+            <div class="ticket-number-box">
+              <span>Número jugado</span>
+              <strong>{{ ticket.number }}</strong>
+              <small>{{ ticket.digits }} dígitos</small>
+            </div>
+
+            <div class="ticket-divider"></div>
+
+            <div class="ticket-info">
+              <div>
+                <span>Fecha de juego</span>
+                <strong>{{ ticket.playDate | date:'dd/MM/yyyy' }}</strong>
+              </div>
+
+              <div>
+                <span>Generado</span>
+                <strong>{{ ticket.generatedAt | date:'dd/MM/yyyy HH:mm' }}</strong>
+              </div>
+
+              <div>
+                <span>Valor apostado</span>
+                <strong>${{ ticket.amount | number:'1.2-2' }}</strong>
+              </div>
+
+              <div>
+                <span>Válido hasta</span>
+                <strong>{{ ticket.expiresAt | date:'dd/MM/yyyy HH:mm' }}</strong>
+              </div>
+            </div>
+
+            <div class="ticket-divider"></div>
+
+            <h3 class="ticket-section-title">Premios</h3>
+
+            <div class="ticket-prizes">
+              @for (prize of ticket.prizes; track prize.name) {
+                <div class="ticket-prize-row">
+                  <span>{{ prize.name }}</span>
+                  <strong>${{ prize.amountToPay | number:'1.2-2' }}</strong>
+                </div>
+              }
+            </div>
+
+            <p class="ticket-note">
+              Premios calculados según el valor apostado.
+            </p>
+
+            <div class="ticket-divider"></div>
+
+            <div class="qr-box">
+              <qrcode
+                [qrdata]="ticket.qrPayload"
+                [width]="settings().paperSize === '58mm' ? 105 : 135"
+                [errorCorrectionLevel]="'M'"
+                [margin]="1"
+              ></qrcode>
+            </div>
+
+            <p class="ticket-code-title">Código único</p>
+            <p class="ticket-code">
+              {{ ticket.id }}
+            </p>
+
+            <p class="ticket-short-code">
+              REF: {{ getShortCode(ticket.id) }}
+            </p>
+
+            <div class="ticket-divider"></div>
+
+            <p class="ticket-expiration">
+              CADUCA EN {{ settings().ticketValidityDays }} DÍAS
+            </p>
+
+            <p class="ticket-footer">
+              Conserve este ticket. No se aceptan tickets alterados o vencidos.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-card actions-card no-print">
+        <ion-button expand="block" class="primary-button" (click)="printTicket()">
+          <ion-icon name="print-outline" slot="start"></ion-icon>
+          Imprimir ticket
+        </ion-button>
+
+        <ion-button expand="block" class="secondary-button" (click)="goBack()">
+          Generar otro ticket
+        </ion-button>
+
+        <ion-button expand="block" fill="clear" class="back-button" (click)="goHome()">
+          <ion-icon name="home-outline" slot="start"></ion-icon>
+          Volver al inicio
+        </ion-button>
+      </section>
+    } @else {
+      <section class="app-card preview-card">
+        <ion-text color="danger">
+          <p>No se encontró ningún ticket.</p>
+        </ion-text>
+
+        <ion-button expand="block" class="primary-button" (click)="goBack()">
+          Volver
+        </ion-button>
+      </section>
+    }
+  </div>
 </ion-content>
