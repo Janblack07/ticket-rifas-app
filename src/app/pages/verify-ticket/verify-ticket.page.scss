@@ -78,6 +78,54 @@
   }
 }
 
+.scan-panel {
+  margin-top: 22px;
+  padding: 16px;
+  border-radius: 20px;
+  background:
+    linear-gradient(135deg, rgba(54, 168, 214, 0.14), rgba(255, 255, 255, 1)),
+    #ffffff;
+  border: 1px solid rgba(54, 168, 214, 0.22);
+  box-shadow: 0 12px 24px rgba(21, 42, 74, 0.08);
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 13px;
+  align-items: center;
+
+  h2 {
+    margin: 0;
+    color: var(--app-text);
+    font-size: 18px;
+    font-weight: 950;
+  }
+
+  p {
+    margin: 4px 0 0;
+    color: var(--app-text-muted);
+    font-size: 12px;
+    line-height: 1.3;
+  }
+}
+
+.scan-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #36a8d6, #238fc1);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(35, 143, 193, 0.26);
+
+  ion-icon {
+    font-size: 28px;
+  }
+}
+
+.scan-button {
+  margin-top: 14px;
+}
+
 .section {
   margin-top: 22px;
   padding-top: 18px;
@@ -111,6 +159,12 @@
   display: grid;
   gap: 10px;
   margin-top: 18px;
+}
+
+.clear-button {
+  --color: #6a7280;
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .result-card {
@@ -252,5 +306,14 @@
 @media (max-width: 370px) {
   .result-details {
     grid-template-columns: 1fr;
+  }
+
+  .scan-panel {
+    grid-template-columns: 48px 1fr;
+  }
+
+  .scan-icon {
+    width: 48px;
+    height: 48px;
   }
 }

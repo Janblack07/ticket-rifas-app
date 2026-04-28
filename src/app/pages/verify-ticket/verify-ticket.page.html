@@ -20,7 +20,7 @@
           <p class="eyebrow">Verificación</p>
           <h1 class="app-title">Verificar ticket</h1>
           <p class="app-subtitle">
-            Pega el contenido del QR para validar autenticidad, vencimiento y premio.
+            Escanea el QR del ticket o pega el contenido manualmente.
           </p>
         </div>
 
@@ -29,10 +29,31 @@
         </div>
       </div>
 
+      <div class="scan-panel">
+        <div class="scan-icon">
+          <ion-icon name="scan-outline"></ion-icon>
+        </div>
+
+        <div>
+          <h2>Escanear QR</h2>
+          <p>Usa la cámara del celular para leer el ticket impreso.</p>
+        </div>
+      </div>
+
+      <ion-button
+        expand="block"
+        class="primary-button scan-button"
+        [disabled]="isScanning"
+        (click)="scanQr()"
+      >
+        <ion-icon name="scan-outline" slot="start"></ion-icon>
+        {{ isScanning ? 'Abriendo cámara...' : 'Escanear QR con cámara' }}
+      </ion-button>
+
       <div class="section">
-        <h2 class="section-title">Contenido del QR</h2>
+        <h2 class="section-title">Verificación manual</h2>
         <p class="section-help">
-          En el siguiente bloque lo leeremos con cámara. Por ahora lo pegamos manualmente.
+          Úsala para pruebas o cuando la cámara no esté disponible.
         </p>
 
         <ion-item class="qr-input">
@@ -53,11 +74,12 @@
       }
 
       <div class="actions">
-        <ion-button expand="block" class="primary-button" (click)="verify()">
-          Verificar ticket
+        <ion-button expand="block" class="secondary-button" (click)="verify()">
+          Verificar manualmente
         </ion-button>
 
-        <ion-button expand="block" class="secondary-button" (click)="clear()">
+        <ion-button expand="block" fill="clear" class="clear-button" (click)="clear()">
+          <ion-icon name="trash-outline" slot="start"></ion-icon>
           Limpiar
         </ion-button>
       </div>

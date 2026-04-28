@@ -18,9 +18,12 @@ import {
   closeCircleOutline,
   trophyOutline,
   warningOutline,
+  scanOutline,
+  trashOutline,
 } from 'ionicons/icons';
 
 import { TicketService } from '../../core/services/ticket.service';
+import { QrScannerService } from '../../core/services/qr-scanner.service';
 import { TicketVerificationResult } from '../../core/interfaces/ticket-verification.interface';
 
 @Component({
@@ -42,10 +45,12 @@ import { TicketVerificationResult } from '../../core/interfaces/ticket-verificat
 export class VerifyTicketPage {
   private readonly router = inject(Router);
   private readonly ticketService = inject(TicketService);
+  private readonly qrScannerService = inject(QrScannerService);
 
   qrPayload = '';
   result: TicketVerificationResult | null = null;
   errorMessage = '';
+  isScanning = false;
 
   constructor() {
     addIcons({
@@ -55,7 +60,30 @@ export class VerifyTicketPage {
       closeCircleOutline,
       trophyOutline,
       warningOutline,
+      scanOutline,
+      trashOutline,
     });
+  }
+
+  async scanQr(): Promise<void> {
+    this.errorMessage = '';
+    this.result = null;
+    this.isScanning = true;
+
+    try {
+      const scanResult = await this.qrScannerService.scanQrCode();
+
+      if (!scanResult.ok || !scanResult.content) {
+        this.errorMessage =
+          scanResult.message || 'No se pudo leer el código QR.';
+        return;
+      }
+
+      this.qrPayload = scanResult.content;
+      this.verify();
+    } finally {
+      this.isScanning = false;
+    }
   }
 
   verify(): void {
@@ -63,7 +91,7 @@ export class VerifyTicketPage {
     this.result = null;
 
     if (!this.qrPayload.trim()) {
-      this.errorMessage = 'Pega el contenido del QR para verificar el ticket.';
+      this.errorMessage = 'Pega o escanea el contenido del QR para verificar el ticket.';
       return;
     }
 
