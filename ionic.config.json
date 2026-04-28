@@ -1,0 +1,7 @@
+{
+  "name": "ticket-rifas-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
