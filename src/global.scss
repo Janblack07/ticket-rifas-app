@@ -25,13 +25,143 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+
+
+:root {
+  --app-bg: #edf6ff;
+  --app-bg-soft: #f8fbff;
+  --app-card-bg: #ffffff;
+  --app-card-bg-soft: #f4f9ff;
+
+  --app-text: #151515;
+  --app-text-white: #ffffff;
+  --app-text-muted: #6a7280;
+
+  --app-border: rgba(20, 33, 61, 0.10);
+  --app-shadow: rgba(21, 42, 74, 0.16);
+
+  --app-blue: #2997c8;
+  --app-blue-dark: #177ba8;
+  --app-blue-soft: #d9effa;
+
+  --app-gold: #d6a84f;
+  --app-gold-soft: #f3d27a;
+  --app-gold-dark: #9b6b16;
+
+  --app-danger: #dc2626;
+  --app-success: #16a34a;
+}
+
+ion-content {
+  --background: var(--app-bg);
+  color: var(--app-text);
+}
+
+.page-container {
+  min-height: 100%;
+  padding: 34px 16px 28px;
+  background:
+    radial-gradient(circle at top, rgba(40, 87, 150, 0.34) 0%, rgba(113, 176, 224, 0.24) 28%, rgba(199, 225, 252, 0.95) 58%),
+    linear-gradient(180deg, #dcecff 0%, #edf6ff 48%, #f8fbff 100%);
+}
+
+.brand-logo {
+  display: block;
+  width: 96px;
+  height: auto;
+  margin: 0 auto 32px;
+  filter:
+    drop-shadow(0 3px 0 rgba(0, 0, 0, 0.20))
+    drop-shadow(0 12px 18px rgba(0, 0, 0, 0.18));
+}
+
+.app-card {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  background: var(--app-card-bg);
+  border: 1px solid var(--app-border);
+  border-radius: 18px;
+  padding: 18px 16px;
+  box-shadow: 0 18px 36px var(--app-shadow);
+}
+
+.app-title {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1.1;
+  font-weight: 900;
+  color: var(--app-text);
+  letter-spacing: -0.7px;
+}
+
+.app-subtitle {
+  margin: 6px 0 0;
+  color: var(--app-text-muted);
+  font-size: 12px;
+}
+
+.form-field {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--app-text-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+ion-input,
+ion-select,
+ion-textarea {
+  --background: #ffffff;
+  --color: #151515;
+  --placeholder-color: #9a9a9a;
+  --border-color: var(--app-border);
+  --highlight-color-focused: var(--app-blue);
+  border-radius: 14px;
+}
+
+ion-item {
+  --background: #ffffff;
+  --color: #151515;
+  --border-color: transparent;
+  --inner-border-width: 0;
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  margin-top: 6px;
+}
+
+.primary-button {
+  --background: linear-gradient(135deg, #36a8d6, #238fc1);
+  --background-activated: #177ba8;
+  --color: var(--app-text-white);
+  --border-radius: 13px;
+  font-weight: 900;
+  min-height: 46px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.secondary-button {
+  --background: #ffffff;
+  --background-activated: #f4f9ff;
+  --color: #151515;
+  --border-radius: 13px;
+  --border-color: var(--app-border);
+  --border-style: solid;
+  --border-width: 1px;
+  font-weight: 800;
+  min-height: 46px;
+}
+
+.danger-text {
+  color: var(--app-danger);
+}
+
+.success-text {
+  color: var(--app-success);
+}

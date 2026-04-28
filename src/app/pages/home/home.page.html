@@ -1,13 +1,100 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>home</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="page-container home-page">
+    <header class="home-header">
+      <img
+        src="/assets/brand/logo4ases.png"
+        alt="4 Ases"
+        class="home-logo"
+      />
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <div class="home-business">
+        <span>Sistema local de tickets</span>
+        <h1>{{ settings().businessName || auth.admin()?.businessName || '4 Ases' }}</h1>
+        <p>
+          Admin:
+          <strong>{{ auth.admin()?.adminName || 'Administrador' }}</strong>
+        </p>
+      </div>
+    </header>
+
+    <section class="quick-card">
+      <div>
+        <p class="quick-label">Panel principal</p>
+        <h2>¿Qué deseas hacer?</h2>
+        <span>Genera tickets, registra ganadores o verifica códigos QR.</span>
+      </div>
+    </section>
+
+    <section class="home-grid">
+      <button
+        type="button"
+        class="menu-card menu-card-primary"
+        (click)="goTo('/generate-ticket')"
+      >
+        <div class="menu-icon">
+          <ion-icon name="ticket-outline"></ion-icon>
+        </div>
+
+        <div>
+          <h3>Generar ticket</h3>
+          <p>Crear nuevo ticket de rifa.</p>
+        </div>
+      </button>
+
+      <button
+        type="button"
+        class="menu-card"
+        (click)="goTo('/winners')"
+      >
+        <div class="menu-icon">
+          <ion-icon name="trophy-outline"></ion-icon>
+        </div>
+
+        <div>
+          <h3>Ganadores del día</h3>
+          <p>Registrar números ganadores.</p>
+        </div>
+      </button>
+
+      <button
+        type="button"
+        class="menu-card"
+        (click)="goTo('/verify-ticket')"
+      >
+        <div class="menu-icon">
+          <ion-icon name="qr-code-outline"></ion-icon>
+        </div>
+
+        <div>
+          <h3>Verificar ticket</h3>
+          <p>Escanear o revisar QR.</p>
+        </div>
+      </button>
+
+      <button
+        type="button"
+        class="menu-card"
+        (click)="goTo('/settings')"
+      >
+        <div class="menu-icon">
+          <ion-icon name="settings-outline"></ion-icon>
+        </div>
+
+        <div>
+          <h3>Configuración</h3>
+          <p>Premios, negocio y ticket.</p>
+        </div>
+      </button>
+    </section>
+
+    <ion-button
+      expand="block"
+      fill="clear"
+      class="logout-button"
+      (click)="logout()"
+    >
+      <ion-icon name="log-out-outline" slot="start"></ion-icon>
+      Cerrar sesión
+    </ion-button>
+  </div>
 </ion-content>

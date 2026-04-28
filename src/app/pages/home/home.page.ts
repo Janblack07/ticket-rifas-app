@@ -1,20 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {
+  IonButton,
+  IonContent,
+  IonIcon,
+} from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
+import { addIcons } from 'ionicons';
+import {
+  ticketOutline,
+  trophyOutline,
+  qrCodeOutline,
+  settingsOutline,
+  logOutOutline,
+} from 'ionicons/icons';
+
+import { AuthLocalService } from '../../core/services/auth-local.service';
+import { SettingsService } from '../../core/services/settings.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    CommonModule,
+    IonContent,
+    IonButton,
+    IonIcon,
+  ],
 })
-export class HomePage implements OnInit {
+export class HomePage {
+  private readonly router = inject(Router);
 
-  constructor() { }
+  readonly auth = inject(AuthLocalService);
+  readonly settingsService = inject(SettingsService);
 
-  ngOnInit() {
+  readonly settings = this.settingsService.settings;
+
+  constructor() {
+    addIcons({
+      ticketOutline,
+      trophyOutline,
+      qrCodeOutline,
+      settingsOutline,
+      logOutOutline,
+    });
   }
 
+  goTo(path: string): void {
+    this.router.navigateByUrl(path);
+  }
+
+  logout(): void {
+    const confirmLogout = confirm('¿Deseas cerrar sesión?');
+
+    if (!confirmLogout) {
+      return;
+    }
+
+    this.auth.logout();
+  }
 }

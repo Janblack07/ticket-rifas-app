@@ -1,13 +1,93 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>register</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="page-container auth-page">
+    <img
+      src="/assets/brand/logo4ases.png"
+      alt="4 Ases"
+      class="brand-logo"
+    />
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <div class="app-card auth-card">
+      <h1 class="app-title">Configurar sistema</h1>
+      <p class="app-subtitle">
+        Registra el administrador principal de este dispositivo.
+      </p>
+
+      <div class="form-field">
+        <label class="form-label">Nombre del negocio</label>
+        <ion-item>
+          <ion-input
+            name="businessName"
+            ngDefaultControl
+            [(ngModel)]="businessName"
+            placeholder="Ej: 4 Ases"
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">Nombre del administrador</label>
+        <ion-item>
+          <ion-input
+            name="adminName"
+            ngDefaultControl
+            [(ngModel)]="adminName"
+            placeholder="Ej: Luis Felipe"
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">Usuario</label>
+        <ion-item>
+          <ion-input
+            name="username"
+            ngDefaultControl
+            [(ngModel)]="username"
+            placeholder="Ej: admin"
+            autocapitalize="off"
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">Contraseña o PIN</label>
+        <ion-item>
+          <ion-input
+            name="password"
+            ngDefaultControl
+            [(ngModel)]="password"
+            type="password"
+            placeholder="Mínimo 4 caracteres"
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">Confirmar contraseña</label>
+        <ion-item>
+          <ion-input
+            name="confirmPassword"
+            ngDefaultControl
+            [(ngModel)]="confirmPassword"
+            type="password"
+            placeholder="Repite la contraseña"
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      @if (errorMessage) {
+        <ion-text color="danger">
+          <p class="error-message">{{ errorMessage }}</p>
+        </ion-text>
+      }
+
+      <ion-button
+        expand="block"
+        class="primary-button ion-margin-top"
+        (click)="register()"
+      >
+        Guardar administrador
+      </ion-button>
+    </div>
+  </div>
 </ion-content>

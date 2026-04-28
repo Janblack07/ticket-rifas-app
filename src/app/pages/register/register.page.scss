@@ -1,0 +1,14 @@
+.auth-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-card {
+  margin-top: 0;
+}
+
+.error-message {
+  margin: 8px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+}

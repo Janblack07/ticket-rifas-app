@@ -1,20 +1,99 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  IonButton,
+  IonContent,
+  IonInput,
+  IonItem,
+  IonSelect,
+  IonSelectOption,
+  IonToggle,
+  IonText,
+} from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
+import { AppSettings } from '../../core/interfaces/app-settings.interface';
+import { SettingsService } from '../../core/services/settings.service';
+import { AuthLocalService } from '../../core/services/auth-local.service';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonContent,
+    IonButton,
+    IonInput,
+    IonItem,
+    IonSelect,
+    IonSelectOption,
+    IonToggle,
+    IonText,
+  ],
 })
 export class SettingsPage implements OnInit {
+  private readonly settingsService = inject(SettingsService);
+  private readonly router = inject(Router);
+  readonly auth = inject(AuthLocalService);
 
-  constructor() { }
+  settings!: AppSettings;
+  successMessage = '';
+  errorMessage = '';
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.settings = structuredClone(this.settingsService.getSettings());
   }
 
+  save(): void {
+    this.successMessage = '';
+    this.errorMessage = '';
+
+    if (!this.settings.businessName.trim()) {
+      this.errorMessage = 'El nombre del negocio es obligatorio.';
+      return;
+    }
+
+    if (this.settings.ticketValidityDays < 1) {
+      this.errorMessage = 'La validez debe ser mínimo de 1 día.';
+      return;
+    }
+
+    const invalidPrize = this.settings.prizes.some(
+      (prize) => Number(prize.multiplier) <= 0
+    );
+
+    if (invalidPrize) {
+      this.errorMessage = 'Todos los premios deben tener un valor mayor a 0.';
+      return;
+    }
+
+    this.settingsService.saveSettings(this.settings);
+    this.successMessage = 'Configuración guardada correctamente.';
+  }
+
+  reset(): void {
+    const confirmReset = confirm(
+      '¿Deseas restaurar los premios y configuración por defecto?'
+    );
+
+    if (!confirmReset) {
+      return;
+    }
+
+    this.settingsService.resetSettings();
+    this.settings = structuredClone(this.settingsService.getSettings());
+    this.successMessage = 'Configuración restaurada.';
+    this.errorMessage = '';
+  }
+
+  goHome(): void {
+    this.router.navigateByUrl('/home');
+  }
+
+  logout(): void {
+    this.auth.logout();
+  }
 }

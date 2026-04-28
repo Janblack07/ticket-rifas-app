@@ -1,13 +1,145 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>settings</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="page-container settings-page">
+    <img
+      src="/assets/brand/logo4ases.png"
+      alt="24 Ases"
+      class="brand-logo"
+    />
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">settings</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <div class="app-card settings-card">
+      <div class="page-header">
+        <div>
+          <h1 class="app-title">Configuración</h1>
+          <p class="app-subtitle">
+            Ajusta los datos del negocio, premios y diseño del ticket.
+          </p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Datos del negocio</h2>
+
+        <div class="form-field">
+          <label class="form-label">Nombre del negocio</label>
+          <ion-item>
+            <ion-input
+              name="businessName"
+              ngDefaultControl
+              [(ngModel)]="settings.businessName"
+              placeholder="Ej: 24 Ases"
+            ></ion-input>
+          </ion-item>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Reglas del ticket</h2>
+
+        <div class="form-field">
+          <label class="form-label">Validez del ticket en días</label>
+          <ion-item>
+            <ion-input
+              name="ticketValidityDays"
+              ngDefaultControl
+              type="number"
+              min="1"
+              [(ngModel)]="settings.ticketValidityDays"
+              placeholder="5"
+            ></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Tamaño del ticket</label>
+          <ion-item>
+            <ion-select
+              name="paperSize"
+              ngDefaultControl
+              [(ngModel)]="settings.paperSize"
+              interface="popover"
+            >
+              <ion-select-option value="58mm">58 mm</ion-select-option>
+              <ion-select-option value="80mm">80 mm</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <div class="toggle-row">
+          <div>
+            <strong>Mostrar logo</strong>
+            <span>Logo centrado arriba del ticket.</span>
+          </div>
+          <ion-toggle
+            name="showLogo"
+            ngDefaultControl
+            [(ngModel)]="settings.showLogo"
+          ></ion-toggle>
+        </div>
+
+        <div class="toggle-row">
+          <div>
+            <strong>Mostrar marca de agua</strong>
+            <span>Cartas doradas en el fondo del ticket.</span>
+          </div>
+          <ion-toggle
+            name="showWatermark"
+            ngDefaultControl
+            [(ngModel)]="settings.showWatermark"
+          ></ion-toggle>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Premios base</h2>
+        <p class="section-help">
+          Estos valores se multiplican por el valor apostado del ticket.
+        </p>
+
+        @for (prize of settings.prizes; track prize.name) {
+          <div class="prize-row">
+            <div>
+              <strong>{{ prize.name }}</strong>
+              <span>Multiplicador</span>
+            </div>
+
+            <ion-item class="prize-input">
+              <ion-input
+                [name]="'prize-' + prize.name"
+                ngDefaultControl
+                type="number"
+                min="1"
+                [(ngModel)]="prize.multiplier"
+              ></ion-input>
+            </ion-item>
+          </div>
+        }
+      </div>
+
+      @if (errorMessage) {
+        <ion-text color="danger">
+          <p class="error-message">{{ errorMessage }}</p>
+        </ion-text>
+      }
+
+      @if (successMessage) {
+        <ion-text color="success">
+          <p class="success-message">{{ successMessage }}</p>
+        </ion-text>
+      }
+
+      <div class="actions">
+        <ion-button expand="block" class="primary-button" (click)="save()">
+          Guardar configuración
+        </ion-button>
+
+        <ion-button expand="block" class="secondary-button" (click)="reset()">
+          Restaurar valores
+        </ion-button>
+
+        <ion-button expand="block" fill="clear" class="back-button" (click)="goHome()">
+          Volver al inicio
+        </ion-button>
+      </div>
+    </div>
+  </div>
 </ion-content>

@@ -1,0 +1,21 @@
+.auth-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-card {
+  margin-top: 0;
+}
+
+.error-message {
+  margin: 8px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.reset-button {
+  margin-top: 8px;
+  --color: #6a7280;
+  font-size: 12px;
+  font-weight: 800;
+}
