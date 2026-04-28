@@ -1,13 +1,128 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>verify-ticket</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="page-container verify-page">
+    <header class="verify-header">
+      <button type="button" class="icon-back-button" (click)="goHome()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">verify-ticket</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <img
+        src="/assets/brand/logo4ases.png"
+        alt="24 Ases"
+        class="verify-logo"
+      />
+
+      <span class="header-spacer"></span>
+    </header>
+
+    <section class="app-card verify-card">
+      <div class="title-row">
+        <div>
+          <p class="eyebrow">Verificación</p>
+          <h1 class="app-title">Verificar ticket</h1>
+          <p class="app-subtitle">
+            Pega el contenido del QR para validar autenticidad, vencimiento y premio.
+          </p>
+        </div>
+
+        <div class="title-icon">
+          <ion-icon name="qr-code-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Contenido del QR</h2>
+        <p class="section-help">
+          En el siguiente bloque lo leeremos con cámara. Por ahora lo pegamos manualmente.
+        </p>
+
+        <ion-item class="qr-input">
+          <ion-textarea
+            name="qrPayload"
+            ngDefaultControl
+            [(ngModel)]="qrPayload"
+            rows="7"
+            placeholder='Ej: {"ticketId":"...","number":"23",...}'
+          ></ion-textarea>
+        </ion-item>
+      </div>
+
+      @if (errorMessage) {
+        <ion-text color="danger">
+          <p class="error-message">{{ errorMessage }}</p>
+        </ion-text>
+      }
+
+      <div class="actions">
+        <ion-button expand="block" class="primary-button" (click)="verify()">
+          Verificar ticket
+        </ion-button>
+
+        <ion-button expand="block" class="secondary-button" (click)="clear()">
+          Limpiar
+        </ion-button>
+      </div>
+    </section>
+
+    @if (result) {
+      <section class="app-card result-card" [class]="getResultClass()">
+        <div class="result-icon">
+          <ion-icon [name]="getResultIcon()"></ion-icon>
+        </div>
+
+        <h2>{{ result.title }}</h2>
+        <p>{{ result.message }}</p>
+
+        @if (result.payload) {
+          <div class="result-details">
+            <div>
+              <span>Número</span>
+              <strong>#{{ result.payload.number }}</strong>
+            </div>
+
+            <div>
+              <span>Tipo</span>
+              <strong>{{ result.payload.digits }} dígitos</strong>
+            </div>
+
+            <div>
+              <span>Valor</span>
+              <strong>${{ result.payload.amount | number:'1.2-2' }}</strong>
+            </div>
+
+            <div>
+              <span>Fecha de juego</span>
+              <strong>{{ result.payload.playDate | date:'dd/MM/yyyy' }}</strong>
+            </div>
+
+            <div>
+              <span>Generado</span>
+              <strong>{{ result.payload.generatedAt | date:'dd/MM/yyyy HH:mm' }}</strong>
+            </div>
+
+            <div>
+              <span>Válido hasta</span>
+              <strong>{{ result.payload.expiresAt | date:'dd/MM/yyyy HH:mm' }}</strong>
+            </div>
+          </div>
+
+          <p class="ticket-code">
+            Código: {{ result.payload.ticketId }}
+          </p>
+        }
+
+        @if (result.winningResult) {
+          <div class="winner-box">
+            <span>Premio ganado</span>
+            <strong>{{ result.winningResult.prizeName }}</strong>
+            <p>
+              Número ganador: #{{ result.winningResult.winnerNumber }}
+            </p>
+            <h3>
+              Pagar: ${{ result.winningResult.amountToPay | number:'1.2-2' }}
+            </h3>
+          </div>
+        }
+      </section>
+    }
+  </div>
 </ion-content>

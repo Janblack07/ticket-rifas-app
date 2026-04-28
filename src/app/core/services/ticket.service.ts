@@ -1,10 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 import { Ticket, GenerateTicketPayload } from '../interfaces/ticket.interface';
 import { TicketPrize } from '../interfaces/prize.interface';
+import {
+  TicketQrPayload,
+  TicketVerificationResult,
+  TicketWinningResult,
+} from '../interfaces/ticket-verification.interface';
 import { SettingsService } from './settings.service';
 import { AuthLocalService } from './auth-local.service';
 import { CryptoService } from './crypto.service';
 import { StorageService } from './storage.service';
+import { WinnerService } from './winner.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +20,7 @@ export class TicketService {
   private readonly auth = inject(AuthLocalService);
   private readonly crypto = inject(CryptoService);
   private readonly storage = inject(StorageService);
+  private readonly winnerService = inject(WinnerService);
 
   private readonly lastTicketKey = 'ticket_rifas_last_ticket';
   private readonly ticketsHistoryKey = 'ticket_rifas_tickets_history';
@@ -79,6 +86,144 @@ export class TicketService {
     this.saveTicketToHistory(ticket);
 
     return ticket;
+  }
+
+  verifyTicketFromQrPayload(rawQrPayload: string): TicketVerificationResult {
+    const admin = this.auth.admin();
+
+    if (!admin) {
+      return {
+        status: 'invalid',
+        title: 'Ticket inválido',
+        message: 'No existe administrador local para verificar la firma.',
+      };
+    }
+
+    let payload: TicketQrPayload;
+
+    try {
+      payload = JSON.parse(rawQrPayload) as TicketQrPayload;
+    } catch {
+      return {
+        status: 'invalid',
+        title: 'QR inválido',
+        message: 'El contenido del QR no tiene un formato válido.',
+      };
+    }
+
+    const requiredFields: Array<keyof TicketQrPayload> = [
+      'ticketId',
+      'businessName',
+      'digits',
+      'number',
+      'amount',
+      'playDate',
+      'generatedAt',
+      'expiresAt',
+      'signature',
+    ];
+
+    const hasMissingField = requiredFields.some((field) => {
+      const value = payload[field];
+      return value === undefined || value === null || value === '';
+    });
+
+    if (hasMissingField) {
+      return {
+        status: 'invalid',
+        title: 'Ticket incompleto',
+        message: 'El QR no contiene todos los datos necesarios.',
+      };
+    }
+
+    const payloadWithoutSignature = {
+      ticketId: payload.ticketId,
+      businessName: payload.businessName,
+      digits: payload.digits,
+      number: payload.number,
+      amount: payload.amount,
+      playDate: payload.playDate,
+      generatedAt: payload.generatedAt,
+      expiresAt: payload.expiresAt,
+    };
+
+    const validSignature = this.crypto.verifyPayloadSignature(
+      payloadWithoutSignature,
+      payload.signature,
+      admin.secretKey
+    );
+
+    if (!validSignature) {
+      return {
+        status: 'invalid',
+        title: 'Ticket alterado',
+        message: 'La firma del ticket no coincide. El QR pudo ser modificado.',
+        payload,
+      };
+    }
+
+    const now = new Date();
+    const expiresAt = new Date(payload.expiresAt);
+
+    if (Number.isNaN(expiresAt.getTime())) {
+      return {
+        status: 'invalid',
+        title: 'Fecha inválida',
+        message: 'La fecha de vencimiento del ticket no es válida.',
+        payload,
+      };
+    }
+
+    if (now > expiresAt) {
+      return {
+        status: 'expired',
+        title: 'Ticket vencido',
+        message: 'El ticket ya superó su fecha de validez.',
+        payload,
+      };
+    }
+
+    const dailyWinner = this.winnerService.getWinnerByDate(
+      payload.playDate,
+      payload.digits
+    );
+
+    if (!dailyWinner) {
+      return {
+        status: 'no-winners',
+        title: 'Ticket válido',
+        message: 'El ticket es auténtico, pero aún no hay ganadores registrados para esa fecha.',
+        payload,
+      };
+    }
+
+    const matchedPrize = dailyWinner.prizes.find(
+      (prize) => prize.winnerNumber === payload.number
+    );
+
+    if (!matchedPrize) {
+      return {
+        status: 'not-winner',
+        title: 'Ticket válido, no ganador',
+        message: 'El número jugado no coincide con los ganadores registrados.',
+        payload,
+      };
+    }
+
+    const winningResult: TicketWinningResult = {
+      prizeName: matchedPrize.name,
+      winnerNumber: matchedPrize.winnerNumber,
+      multiplier: matchedPrize.multiplier,
+      amountToPay: this.roundMoney(Number(payload.amount) * Number(matchedPrize.multiplier)),
+    };
+
+    return {
+      status: 'winner',
+      title: 'Ticket ganador',
+      message: `Ganó en ${matchedPrize.name}.`,
+      payload,
+      winningResult,
+    };
   }
 
   validateNumber(number: string, digits: 2 | 3): string | null {
@@ -177,7 +322,6 @@ export class TicketService {
 
   private saveTicketToHistory(ticket: Ticket): void {
     const history = this.getTicketsHistory();
-
     const updatedHistory = [ticket, ...history];
 
     this.storage.set(this.ticketsHistoryKey, updatedHistory);

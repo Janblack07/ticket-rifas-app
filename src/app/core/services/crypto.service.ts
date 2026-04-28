@@ -30,4 +30,13 @@ export class CryptoService {
     const rawPayload = JSON.stringify(payload);
     return CryptoJS.HmacSHA256(rawPayload, secretKey).toString();
   }
+
+  verifyPayloadSignature(
+    payloadWithoutSignature: unknown,
+    signature: string,
+    secretKey: string
+  ): boolean {
+    const expectedSignature = this.signPayload(payloadWithoutSignature, secretKey);
+    return expectedSignature === signature;
+  }
 }
