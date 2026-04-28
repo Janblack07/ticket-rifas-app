@@ -1,0 +1,187 @@
+.winners-page {
+  padding-bottom: 28px;
+}
+
+.winners-header {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 18px;
+  display: grid;
+  grid-template-columns: 42px 1fr 42px;
+  align-items: center;
+}
+
+.icon-back-button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--app-text);
+  box-shadow: 0 10px 20px rgba(21, 42, 74, 0.1);
+
+  ion-icon {
+    font-size: 22px;
+  }
+}
+
+.winners-logo {
+  width: 84px;
+  height: auto;
+  margin: 0 auto;
+  filter:
+    drop-shadow(0 3px 0 rgba(0, 0, 0, 0.2))
+    drop-shadow(0 12px 18px rgba(0, 0, 0, 0.18));
+}
+
+.header-spacer {
+  width: 42px;
+}
+
+.winners-card {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.eyebrow {
+  margin: 0 0 5px;
+  color: var(--app-blue-dark);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.title-icon {
+  min-width: 50px;
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 17px;
+  background: linear-gradient(135deg, #36a8d6, #238fc1);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(35, 143, 193, 0.26);
+
+  ion-icon {
+    font-size: 25px;
+  }
+}
+
+.section {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--app-border);
+}
+
+.section-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 950;
+  color: var(--app-text);
+}
+
+.section-help {
+  margin: 6px 0 0;
+  color: var(--app-text-muted);
+  font-size: 12px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.range-badge {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: var(--app-blue-soft);
+  color: var(--app-blue-dark);
+  font-size: 11px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.winners-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.winner-row {
+  display: grid;
+  grid-template-columns: 1fr 92px;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 18px;
+  background: #f7fbff;
+  border: 1px solid var(--app-border);
+}
+
+.winner-prize {
+  strong {
+    display: block;
+    color: var(--app-text);
+    font-size: 14px;
+    font-weight: 950;
+  }
+
+  span {
+    display: block;
+    margin-top: 3px;
+    color: var(--app-text-muted);
+    font-size: 12px;
+    font-weight: 800;
+  }
+}
+
+.winner-input {
+  margin-top: 0;
+
+  ion-input {
+    text-align: center;
+    font-weight: 950;
+  }
+}
+
+.error-message,
+.success-message {
+  margin: 16px 0 0;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.back-button {
+  --color: #6a7280;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+@media (max-width: 370px) {
+  .winner-row {
+    grid-template-columns: 1fr 78px;
+    padding: 10px;
+  }
+
+  .winner-prize strong {
+    font-size: 13px;
+  }
+}

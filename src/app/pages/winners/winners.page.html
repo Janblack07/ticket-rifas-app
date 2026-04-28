@@ -1,13 +1,140 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>winners</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="page-container winners-page">
+    <header class="winners-header">
+      <button type="button" class="icon-back-button" (click)="goHome()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">winners</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <img
+        src="/assets/brand/logo4ases.png"
+        alt="24 Ases"
+        class="winners-logo"
+      />
+
+      <span class="header-spacer"></span>
+    </header>
+
+    <section class="app-card winners-card">
+      <div class="title-row">
+        <div>
+          <p class="eyebrow">Sorteo diario</p>
+          <h1 class="app-title">Ganadores del día</h1>
+          <p class="app-subtitle">
+            Registra manualmente los 7 números ganadores.
+          </p>
+        </div>
+
+        <div class="title-icon">
+          <ion-icon name="trophy-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Datos del sorteo</h2>
+
+        <div class="form-field">
+          <label class="form-label">Fecha del sorteo</label>
+          <ion-item>
+            <ion-input
+              name="date"
+              ngDefaultControl
+              [(ngModel)]="date"
+              type="date"
+              (ionChange)="onDateChange()"
+            ></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Tipo de número</label>
+          <ion-item>
+            <ion-select
+              name="digits"
+              ngDefaultControl
+              [(ngModel)]="digits"
+              interface="popover"
+              (ionChange)="onDigitsChange()"
+            >
+              <ion-select-option [value]="2">
+                2 dígitos: 00 al 99
+              </ion-select-option>
+
+              <ion-select-option [value]="3">
+                3 dígitos: 000 al 099
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+      </div>
+
+      @if (winner) {
+        <div class="section">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Premios</h2>
+              <p class="section-help">
+                Ingresa el número ganador de cada premio.
+              </p>
+            </div>
+
+            <span class="range-badge">
+              {{ digits === 2 ? '00 - 99' : '000 - 099' }}
+            </span>
+          </div>
+
+          <div class="winners-list">
+            @for (prize of winner.prizes; track prize.name; let i = $index) {
+              <div class="winner-row">
+                <div class="winner-prize">
+                  <strong>{{ prize.name }}</strong>
+                  <span>Premio x{{ prize.multiplier }}</span>
+                </div>
+
+                <ion-item class="winner-input">
+                  <ion-input
+                    [name]="'winner-' + prize.name"
+                    ngDefaultControl
+                    [(ngModel)]="prize.winnerNumber"
+                    type="tel"
+                    inputmode="numeric"
+                    [maxlength]="digits"
+                    [placeholder]="digits === 2 ? '00' : '000'"
+                    (ionBlur)="normalizePrizeNumber(i)"
+                  ></ion-input>
+                </ion-item>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (errorMessage) {
+        <ion-text color="danger">
+          <p class="error-message">{{ errorMessage }}</p>
+        </ion-text>
+      }
+
+      @if (successMessage) {
+        <ion-text color="success">
+          <p class="success-message">{{ successMessage }}</p>
+        </ion-text>
+      }
+
+      <div class="actions">
+        <ion-button expand="block" class="primary-button" (click)="save()">
+          <ion-icon name="save-outline" slot="start"></ion-icon>
+          Guardar ganadores
+        </ion-button>
+
+        <ion-button expand="block" class="secondary-button" (click)="resetForm()">
+          <ion-icon name="refresh-outline" slot="start"></ion-icon>
+          Limpiar pantalla
+        </ion-button>
+
+        <ion-button expand="block" fill="clear" class="back-button" (click)="goHome()">
+          Volver al inicio
+        </ion-button>
+      </div>
+    </section>
+  </div>
 </ion-content>
