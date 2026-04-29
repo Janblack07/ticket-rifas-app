@@ -130,8 +130,8 @@ export class WinnerService {
         return `El número de ${prizeName} no puede tener más de 3 dígitos.`;
       }
 
-      if (numericValue < 0 || numericValue > 99) {
-        return `El número de ${prizeName} debe estar entre 000 y 099.`;
+      if (numericValue < 0 || numericValue > 999) {
+        return `El número de ${prizeName} debe estar entre 000 y 999.`;
       }
     }
 

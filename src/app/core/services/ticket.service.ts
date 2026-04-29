@@ -266,8 +266,8 @@ export class TicketService {
     }
 
     if (digits === 3) {
-      if (numericValue < 0 || numericValue > 99) {
-        return 'Para 3 dígitos, el número debe estar entre 000 y 099.';
+      if (numericValue < 0 || numericValue > 999) {
+        return 'Para 3 dígitos, el número debe estar entre 000 y 999.';
       }
 
       if (cleanNumber.length > 3) {

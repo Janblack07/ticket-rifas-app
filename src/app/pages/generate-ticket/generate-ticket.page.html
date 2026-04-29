@@ -44,7 +44,7 @@
               (ionChange)="onDigitsChange()"
             >
               <ion-select-option [value]="2">2 dígitos: 00 al 99</ion-select-option>
-              <ion-select-option [value]="3">3 dígitos: 000 al 099</ion-select-option>
+              <ion-select-option [value]="3">3 dígitos: 000 al 999</ion-select-option>
             </ion-select>
           </ion-item>
         </div>
@@ -53,7 +53,7 @@
           <label class="form-label">
             Número del Jugador
             <span>
-              {{ digits === 2 ? '00 - 99' : '000 - 099' }}
+              {{ digits === 2 ? '00 - 99' : '000 - 999' }}
             </span>
           </label>
 
