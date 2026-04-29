@@ -35,9 +35,20 @@ export class TicketService {
 
     const normalizedNumber = this.normalizeNumber(payload.number, payload.digits);
 
-    if (this.isNumberAlreadyUsed(payload.playDate, payload.digits, normalizedNumber)) {
+    const usedCount = this.countTicketsByNumber(
+      payload.playDate,
+      payload.digits,
+      normalizedNumber
+    );
+
+    const maxTicketsPerNumber =
+      Number(settings.maxTicketsPerNumberPerDay) > 0
+        ? Number(settings.maxTicketsPerNumberPerDay)
+        : 5;
+
+    if (usedCount >= maxTicketsPerNumber) {
       throw new Error(
-        `El número ${normalizedNumber} ya fue vendido para la fecha ${payload.playDate}.`
+        `El número ${normalizedNumber} ya alcanzó el límite de ${maxTicketsPerNumber} ventas para la fecha ${payload.playDate}.`
       );
     }
 
@@ -47,7 +58,9 @@ export class TicketService {
 
     const prizes: TicketPrize[] = settings.prizes.map((prize) => ({
       ...prize,
-      amountToPay: this.roundMoney(Number(payload.amount) * Number(prize.multiplier)),
+      amountToPay: this.roundMoney(
+        Number(payload.amount) * Number(prize.multiplier)
+      ),
     }));
 
     const basePayload = {
@@ -192,7 +205,8 @@ export class TicketService {
       return {
         status: 'no-winners',
         title: 'Ticket válido',
-        message: 'El ticket es auténtico, pero aún no hay ganadores registrados para esa fecha.',
+        message:
+          'El ticket es auténtico, pero aún no hay ganadores registrados para esa fecha.',
         payload,
       };
     }
@@ -214,7 +228,9 @@ export class TicketService {
       prizeName: matchedPrize.name,
       winnerNumber: matchedPrize.winnerNumber,
       multiplier: matchedPrize.multiplier,
-      amountToPay: this.roundMoney(Number(payload.amount) * Number(matchedPrize.multiplier)),
+      amountToPay: this.roundMoney(
+        Number(payload.amount) * Number(matchedPrize.multiplier)
+      ),
     };
 
     return {
@@ -267,10 +283,22 @@ export class TicketService {
     digits: 2 | 3,
     number: string
   ): string | null {
+    const settings = this.settingsService.getSettings();
     const normalizedNumber = this.normalizeNumber(number, digits);
 
-    if (this.isNumberAlreadyUsed(playDate, digits, normalizedNumber)) {
-      return `El número ${normalizedNumber} ya fue vendido para este día.`;
+    const usedCount = this.countTicketsByNumber(
+      playDate,
+      digits,
+      normalizedNumber
+    );
+
+    const maxTicketsPerNumber =
+      Number(settings.maxTicketsPerNumberPerDay) > 0
+        ? Number(settings.maxTicketsPerNumberPerDay)
+        : 5;
+
+    if (usedCount >= maxTicketsPerNumber) {
+      return `El número ${normalizedNumber} ya alcanzó el límite de ${maxTicketsPerNumber} ventas para este día.`;
     }
 
     return null;
@@ -307,17 +335,25 @@ export class TicketService {
     });
   }
 
+  countTicketsByNumber(
+    playDate: string,
+    digits: 2 | 3,
+    normalizedNumber: string
+  ): number {
+    return this.getTicketsHistory().filter(
+      (ticket) =>
+        ticket.playDate === playDate &&
+        ticket.digits === digits &&
+        ticket.number === normalizedNumber
+    ).length;
+  }
+
   isNumberAlreadyUsed(
     playDate: string,
     digits: 2 | 3,
     normalizedNumber: string
   ): boolean {
-    return this.getTicketsHistory().some(
-      (ticket) =>
-        ticket.playDate === playDate &&
-        ticket.digits === digits &&
-        ticket.number === normalizedNumber
-    );
+    return this.countTicketsByNumber(playDate, digits, normalizedNumber) > 0;
   }
 
   private saveTicketToHistory(ticket: Ticket): void {

@@ -51,7 +51,7 @@
 
         <div class="form-field">
           <label class="form-label">
-            Número jugado
+            Número del Jugador
             <span>
               {{ digits === 2 ? '00 - 99' : '000 - 099' }}
             </span>
@@ -69,6 +69,11 @@
             ></ion-input>
           </ion-item>
         </div>
+        @if (availabilityText) {
+  <p class="availability-text">
+    {{ availabilityText }}
+  </p>
+}
 
         <div class="form-field">
           <label class="form-label">Valor apostado</label>

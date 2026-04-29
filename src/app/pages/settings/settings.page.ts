@@ -48,31 +48,39 @@ export class SettingsPage implements OnInit {
   }
 
   save(): void {
-    this.successMessage = '';
-    this.errorMessage = '';
+  this.successMessage = '';
+  this.errorMessage = '';
 
-    if (!this.settings.businessName.trim()) {
-      this.errorMessage = 'El nombre del negocio es obligatorio.';
-      return;
-    }
-
-    if (this.settings.ticketValidityDays < 1) {
-      this.errorMessage = 'La validez debe ser mínimo de 1 día.';
-      return;
-    }
-
-    const invalidPrize = this.settings.prizes.some(
-      (prize) => Number(prize.multiplier) <= 0
-    );
-
-    if (invalidPrize) {
-      this.errorMessage = 'Todos los premios deben tener un valor mayor a 0.';
-      return;
-    }
-
-    this.settingsService.saveSettings(this.settings);
-    this.successMessage = 'Configuración guardada correctamente.';
+  if (!this.settings.businessName.trim()) {
+    this.errorMessage = 'El nombre del negocio es obligatorio.';
+    return;
   }
+
+  if (this.settings.ticketValidityDays < 1) {
+    this.errorMessage = 'La validez debe ser mínimo de 1 día.';
+    return;
+  }
+
+  if (
+    !this.settings.maxTicketsPerNumberPerDay ||
+    Number(this.settings.maxTicketsPerNumberPerDay) < 1
+  ) {
+    this.errorMessage = 'La cantidad máxima por número debe ser mínimo 1.';
+    return;
+  }
+
+  const invalidPrize = this.settings.prizes.some(
+    (prize) => Number(prize.multiplier) <= 0
+  );
+
+  if (invalidPrize) {
+    this.errorMessage = 'Todos los premios deben tener un valor mayor a 0.';
+    return;
+  }
+
+  this.settingsService.saveSettings(this.settings);
+  this.successMessage = 'Configuración guardada correctamente.';
+}
 
   reset(): void {
     const confirmReset = confirm(

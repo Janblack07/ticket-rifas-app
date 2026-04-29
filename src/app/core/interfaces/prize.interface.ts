@@ -1,11 +1,11 @@
 export type PrizeName =
-  | 'PRIMERA'
-  | 'SEGUNDA'
-  | 'TERCERA'
-  | 'CUARTA'
-  | 'QUINTA'
-  | 'SEXTA'
-  | 'SÉPTIMA';
+  | 'PRIMERA SUERTE'
+  | 'SEGUNDA SUERTE'
+  | 'TERCERA SUERTE'
+  | 'CUARTA SUERTE'
+  | 'QUINTA SUERTE'
+  | 'SEXTA SUERTE'
+  | 'SÉPTIMA SUERTE';
 
 export interface Prize {
   name: PrizeName;

@@ -154,4 +154,25 @@ export class GenerateTicketPage {
 
     return `${year}-${month}-${day}`;
   }
+  get availabilityText(): string {
+  if (!this.number.trim() || !/^\d+$/.test(this.number.trim())) {
+    return '';
+  }
+
+  const normalizedNumber = this.ticketService.normalizeNumber(
+    this.number,
+    this.digits
+  );
+
+  const usedCount = this.ticketService.countTicketsByNumber(
+    this.playDate,
+    this.digits,
+    normalizedNumber
+  );
+
+  const limit = this.settings.maxTicketsPerNumberPerDay;
+  const available = Math.max(limit - usedCount, 0);
+
+  return `Vendido ${usedCount}/${limit}. Cupos disponibles: ${available}.`;
+}
 }

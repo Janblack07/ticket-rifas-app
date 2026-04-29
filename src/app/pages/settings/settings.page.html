@@ -62,6 +62,22 @@
               <ion-select-option value="80mm">80 mm</ion-select-option>
             </ion-select>
           </ion-item>
+           <label class="form-label">Máximo de ventas del mismo número</label>
+  <ion-item>
+    <ion-input
+      name="maxTicketsPerNumberPerDay"
+      ngDefaultControl
+      type="number"
+      min="1"
+      step="1"
+      [(ngModel)]="settings.maxTicketsPerNumberPerDay"
+      placeholder="5"
+    ></ion-input>
+  </ion-item>
+
+  <p class="field-help">
+    Ejemplo: si colocas 5, el mismo número podrá venderse máximo 5 veces por día.
+  </p>
         </div>
 
         <div class="toggle-row">
