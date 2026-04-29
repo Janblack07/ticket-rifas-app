@@ -13,6 +13,7 @@ import {
   qrCodeOutline,
   settingsOutline,
   logOutOutline,
+  listCircleOutline
 } from 'ionicons/icons';
 
 import { AuthLocalService } from '../../core/services/auth-local.service';
@@ -28,6 +29,7 @@ import { SettingsService } from '../../core/services/settings.service';
     IonContent,
     IonButton,
     IonIcon,
+
   ],
 })
 export class HomePage {
@@ -45,6 +47,7 @@ export class HomePage {
       qrCodeOutline,
       settingsOutline,
       logOutOutline,
+      listCircleOutline
     });
   }
 

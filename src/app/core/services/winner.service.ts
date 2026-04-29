@@ -149,23 +149,37 @@ export class WinnerService {
   }
 
   syncPrizesWithSettings(winner: DailyWinner): DailyWinner {
-    const settings = this.settingsService.getSettings();
+  const settings = this.settingsService.getSettings();
 
-    const updatedPrizes: DailyWinnerPrize[] = settings.prizes.map((settingPrize) => {
-      const currentPrize = winner.prizes.find(
-        (prize) => prize.name === settingPrize.name
+  const updatedPrizes: DailyWinnerPrize[] = settings.prizes.map((settingPrize) => {
+    const currentPrize = winner.prizes.find((prize) => {
+      return (
+        prize.name === settingPrize.name ||
+        this.normalizePrizeName(prize.name) === this.normalizePrizeName(settingPrize.name)
       );
-
-      return {
-        name: settingPrize.name,
-        winnerNumber: currentPrize?.winnerNumber ?? '',
-        multiplier: settingPrize.multiplier,
-      };
     });
 
     return {
-      ...winner,
-      prizes: updatedPrizes,
+      name: settingPrize.name,
+      winnerNumber: currentPrize?.winnerNumber ?? '',
+      multiplier: settingPrize.multiplier,
     };
-  }
+  });
+
+  return {
+    ...winner,
+    prizes: updatedPrizes,
+  };
+}
+
+private normalizePrizeName(name: string): string {
+  return name
+    .replace(' SUERTE', '')
+    .replace('SÉPTIMA', 'SEPTIMA')
+    .replace('SÉXTA', 'SEXTA')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toUpperCase();
+}
 }

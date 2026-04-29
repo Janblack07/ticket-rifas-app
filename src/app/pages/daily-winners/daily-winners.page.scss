@@ -1,0 +1,256 @@
+.daily-winners-page {
+  padding-bottom: 28px;
+}
+
+.daily-header {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 18px;
+  display: grid;
+  grid-template-columns: 42px 1fr 42px;
+  align-items: center;
+}
+
+.icon-back-button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--app-text);
+  box-shadow: 0 10px 20px rgba(21, 42, 74, 0.1);
+
+  ion-icon {
+    font-size: 22px;
+  }
+}
+
+.daily-logo {
+  width: 84px;
+  height: auto;
+  margin: 0 auto;
+  filter:
+    drop-shadow(0 3px 0 rgba(0, 0, 0, 0.2))
+    drop-shadow(0 12px 18px rgba(0, 0, 0, 0.18));
+}
+
+.header-spacer {
+  width: 42px;
+}
+
+.daily-card {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.eyebrow {
+  margin: 0 0 5px;
+  color: var(--app-blue-dark);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.title-icon {
+  min-width: 50px;
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 17px;
+  background: linear-gradient(135deg, #36a8d6, #238fc1);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(35, 143, 193, 0.26);
+
+  ion-icon {
+    font-size: 25px;
+  }
+}
+
+.section {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--app-border);
+}
+
+.section-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 950;
+  color: var(--app-text);
+}
+
+.section-help {
+  margin: 6px 0 0;
+  color: var(--app-text-muted);
+  font-size: 12px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.range-badge {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: var(--app-blue-soft);
+  color: var(--app-blue-dark);
+  font-size: 11px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.winner-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+
+  div {
+    padding: 12px;
+    border-radius: 16px;
+    background: #f7fbff;
+    border: 1px solid var(--app-border);
+  }
+
+  span {
+    display: block;
+    color: var(--app-text-muted);
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--app-text);
+    font-size: 14px;
+    font-weight: 950;
+  }
+}
+
+.winners-view-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.winner-view-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  border-radius: 18px;
+  background: #f7fbff;
+  border: 1px solid var(--app-border);
+}
+
+.winner-position {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  ion-icon {
+    min-width: 34px;
+    width: 34px;
+    height: 34px;
+    padding: 8px;
+    border-radius: 13px;
+    background: var(--app-blue-soft);
+    color: var(--app-blue-dark);
+  }
+
+  strong {
+    display: block;
+    color: var(--app-text);
+    font-size: 13px;
+    font-weight: 950;
+  }
+
+  span {
+    display: block;
+    margin-top: 2px;
+    color: var(--app-text-muted);
+    font-size: 11px;
+    font-weight: 800;
+  }
+}
+
+.winner-number {
+  min-width: 58px;
+  text-align: right;
+  color: var(--app-blue-dark);
+  font-size: 22px;
+  font-weight: 950;
+  letter-spacing: -0.5px;
+}
+
+.empty-state {
+  margin-top: 22px;
+  padding: 20px 14px;
+  text-align: center;
+  border-radius: 22px;
+  background: #f7fbff;
+  border: 1px solid var(--app-border);
+
+  h2 {
+    margin: 10px 0 0;
+    color: var(--app-text);
+    font-size: 18px;
+    font-weight: 950;
+  }
+
+  p {
+    margin: 7px 0 16px;
+    color: var(--app-text-muted);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+}
+
+.empty-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+  border-radius: 20px;
+  background: var(--app-blue-soft);
+  color: var(--app-blue-dark);
+
+  ion-icon {
+    font-size: 30px;
+  }
+}
+
+.back-button {
+  margin-top: 14px;
+  --color: #6a7280;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+@media (max-width: 370px) {
+  .winner-view-row {
+    align-items: flex-start;
+  }
+
+  .winner-number {
+    font-size: 19px;
+  }
+}

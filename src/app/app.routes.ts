@@ -52,4 +52,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/settings/settings.page').then((m) => m.SettingsPage),
   },
+  {
+    path: 'daily-winners',
+    loadComponent: () => import('./pages/daily-winners/daily-winners.page').then( m => m.DailyWinnersPage)
+  },
 ];
