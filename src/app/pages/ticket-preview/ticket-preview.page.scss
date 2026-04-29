@@ -317,6 +317,13 @@
   font-size: 12px;
   font-weight: 900;
 }
+.print-error {
+  margin: 8px 0 0;
+  color: var(--app-danger);
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+}
 
 /* IMPRESIÓN */
 @media print {
@@ -366,4 +373,11 @@
   .paper-58 {
     width: 58mm !important;
   }
+  .print-error {
+  margin: 8px 0 0;
+  color: var(--app-danger);
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+}
 }

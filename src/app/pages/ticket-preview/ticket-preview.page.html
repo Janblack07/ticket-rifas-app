@@ -142,10 +142,21 @@
       </section>
 
       <section class="app-card actions-card no-print">
-        <ion-button expand="block" class="primary-button" (click)="printTicket()">
-          <ion-icon name="print-outline" slot="start"></ion-icon>
-          Imprimir ticket
-        </ion-button>
+        <ion-button
+            expand="block"
+            class="primary-button"
+            [disabled]="isPrinting"
+            (click)="printTicket()"
+          >
+            <ion-icon name="print-outline" slot="start"></ion-icon>
+            {{ isPrinting ? 'Preparando ticket...' : 'Imprimir / compartir ticket' }}
+          </ion-button>
+
+          @if (printErrorMessage) {
+            <p class="print-error">
+              {{ printErrorMessage }}
+            </p>
+          }
 
         <ion-button expand="block" class="secondary-button" (click)="goBack()">
           Generar otro ticket
