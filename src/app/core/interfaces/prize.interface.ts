@@ -5,7 +5,9 @@ export type PrizeName =
   | 'CUARTA SUERTE'
   | 'QUINTA SUERTE'
   | 'SEXTA SUERTE'
-  | 'SÉPTIMA SUERTE';
+  | 'SÉPTIMA SUERTE'
+  | 'OCTAVA SUERTE'
+  | 'NOVENA SUERTE';
 
 export interface Prize {
   name: PrizeName;

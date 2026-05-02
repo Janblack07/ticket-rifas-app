@@ -56,12 +56,14 @@ export class TicketService {
     const expiresAt = new Date(generatedAt);
     expiresAt.setDate(generatedAt.getDate() + settings.ticketValidityDays);
 
-    const prizes: TicketPrize[] = settings.prizes.map((prize) => ({
-      ...prize,
-      amountToPay: this.roundMoney(
-        Number(payload.amount) * Number(prize.multiplier)
-      ),
-    }));
+    const basePrizes = this.settingsService.getPrizesByDigits(payload.digits);
+
+const prizes: TicketPrize[] = basePrizes.map((prize) => ({
+  ...prize,
+  amountToPay: this.roundMoney(
+    Number(payload.amount) * Number(prize.multiplier)
+  ),
+}));
 
     const basePayload = {
       ticketId: this.crypto.generateId(),

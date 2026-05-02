@@ -106,30 +106,72 @@
       </div>
 
       <div class="section">
-        <h2 class="section-title">Premios base</h2>
-        <p class="section-help">
-          Estos valores se multiplican por el valor apostado del ticket.
-        </p>
+  <h2 class="section-title">Premios 2 dígitos</h2>
+  <p class="section-help">
+    Estos valores se multiplican por el valor apostado del ticket de 2 dígitos.
+  </p>
 
-        @for (prize of settings.prizes; track prize.name) {
-          <div class="prize-row">
-            <div>
-              <strong>{{ prize.name }}</strong>
-              <span>Multiplicador</span>
-            </div>
-
-            <ion-item class="prize-input">
-              <ion-input
-                [name]="'prize-' + prize.name"
-                ngDefaultControl
-                type="number"
-                min="1"
-                [(ngModel)]="prize.multiplier"
-              ></ion-input>
-            </ion-item>
-          </div>
-        }
+  @for (prize of settings.twoDigitPrizes; track prize.name) {
+    <div class="prize-row">
+      <div>
+        <strong>{{ prize.name }}</strong>
+        <span>Multiplicador</span>
       </div>
+
+      <ion-item class="prize-input">
+        <ion-input
+          [name]="'two-prize-' + prize.name"
+          ngDefaultControl
+          type="number"
+          min="1"
+          [(ngModel)]="prize.multiplier"
+        ></ion-input>
+      </ion-item>
+    </div>
+  }
+</div>
+
+<div class="section">
+  <h2 class="section-title">Premios 3 dígitos</h2>
+  <p class="section-help">
+    Estos valores se multiplican por el valor apostado del ticket de 3 dígitos.
+  </p>
+
+  @for (prize of settings.threeDigitPrizes; track prize.name) {
+    <div class="prize-row">
+      <div>
+        <strong>{{ prize.name }}</strong>
+        <span>Multiplicador</span>
+      </div>
+
+      <ion-item class="prize-input">
+        <ion-input
+          [name]="'three-prize-' + prize.name"
+          ngDefaultControl
+          type="number"
+          min="1"
+          [(ngModel)]="prize.multiplier"
+        ></ion-input>
+      </ion-item>
+    </div>
+  }
+</div>
+
+<div class="section">
+  <h2 class="section-title">Nota del ticket</h2>
+
+  <div class="form-field">
+    <label class="form-label">Texto sobre lotería</label>
+    <ion-item>
+      <ion-input
+        name="lotteryNote"
+        ngDefaultControl
+        [(ngModel)]="settings.lotteryNote"
+        placeholder="Este ticket juega con los números ganadores de la lotería."
+      ></ion-input>
+    </ion-item>
+  </div>
+</div>
 
       @if (errorMessage) {
         <ion-text color="danger">

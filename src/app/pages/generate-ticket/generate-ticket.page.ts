@@ -77,14 +77,15 @@ export class GenerateTicketPage {
   }
 
   get calculatedPrizes() {
-    const value = Number(this.amount) || 0;
+  const value = Number(this.amount) || 0;
+  const prizes = this.settingsService.getPrizesByDigits(this.digits);
 
-    return this.settings.prizes.map((prize) => ({
-      ...prize,
-      amountToPay:
-        Math.round((value * prize.multiplier + Number.EPSILON) * 100) / 100,
-    }));
-  }
+  return prizes.map((prize) => ({
+    ...prize,
+    amountToPay:
+      Math.round((value * prize.multiplier + Number.EPSILON) * 100) / 100,
+  }));
+}
 
   onDigitsChange(): void {
     this.number = '';

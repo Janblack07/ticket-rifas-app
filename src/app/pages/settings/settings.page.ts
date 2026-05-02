@@ -69,14 +69,18 @@ export class SettingsPage implements OnInit {
     return;
   }
 
-  const invalidPrize = this.settings.prizes.some(
-    (prize) => Number(prize.multiplier) <= 0
-  );
+  const invalidTwoDigitPrize = this.settings.twoDigitPrizes.some(
+  (prize) => Number(prize.multiplier) <= 0
+);
 
-  if (invalidPrize) {
-    this.errorMessage = 'Todos los premios deben tener un valor mayor a 0.';
-    return;
-  }
+const invalidThreeDigitPrize = this.settings.threeDigitPrizes.some(
+  (prize) => Number(prize.multiplier) <= 0
+);
+
+if (invalidTwoDigitPrize || invalidThreeDigitPrize) {
+  this.errorMessage = 'Todos los premios deben tener un valor mayor a 0.';
+  return;
+}
 
   this.settingsService.saveSettings(this.settings);
   this.successMessage = 'Configuración guardada correctamente.';

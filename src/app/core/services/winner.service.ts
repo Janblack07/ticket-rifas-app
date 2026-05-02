@@ -14,20 +14,20 @@ export class WinnerService {
   private readonly winnersKey = 'ticket_rifas_daily_winners';
 
   createEmptyWinner(date: string, digits: TicketDigits): DailyWinner {
-    const settings = this.settingsService.getSettings();
+  const prizes = this.settingsService.getPrizesByDigits(digits);
 
-    return {
-      date,
-      digits,
-      prizes: settings.prizes.map((prize) => ({
-        name: prize.name,
-        winnerNumber: '',
-        multiplier: prize.multiplier,
-      })),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-  }
+  return {
+    date,
+    digits,
+    prizes: prizes.map((prize) => ({
+      name: prize.name,
+      winnerNumber: '',
+      multiplier: prize.multiplier,
+    })),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+}
 
   saveWinner(winner: DailyWinner): void {
     const winners = this.getAllWinners();
@@ -149,13 +149,14 @@ export class WinnerService {
   }
 
   syncPrizesWithSettings(winner: DailyWinner): DailyWinner {
-  const settings = this.settingsService.getSettings();
+  const settingPrizes = this.settingsService.getPrizesByDigits(winner.digits);
 
-  const updatedPrizes: DailyWinnerPrize[] = settings.prizes.map((settingPrize) => {
+  const updatedPrizes: DailyWinnerPrize[] = settingPrizes.map((settingPrize) => {
     const currentPrize = winner.prizes.find((prize) => {
       return (
         prize.name === settingPrize.name ||
-        this.normalizePrizeName(prize.name) === this.normalizePrizeName(settingPrize.name)
+        this.normalizePrizeName(prize.name) ===
+          this.normalizePrizeName(settingPrize.name)
       );
     });
 
@@ -175,11 +176,11 @@ export class WinnerService {
 private normalizePrizeName(name: string): string {
   return name
     .replace(' SUERTE', '')
-    .replace('SÉPTIMA', 'SEPTIMA')
-    .replace('SÉXTA', 'SEXTA')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .trim()
     .toUpperCase();
 }
+
+
 }

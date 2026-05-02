@@ -8,13 +8,12 @@ export interface AppSettings {
   paperSize: TicketPaperSize;
   showLogo: boolean;
   showWatermark: boolean;
-
-  /**
-   * Cantidad máxima de tickets permitidos con el mismo número,
-   * en la misma fecha de juego y con el mismo tipo de dígitos.
-   */
   maxTicketsPerNumberPerDay: number;
 
-  prizes: Prize[];
+  twoDigitPrizes: Prize[];
+  threeDigitPrizes: Prize[];
+
+  lotteryNote: string;
+
   updatedAt: string;
 }
