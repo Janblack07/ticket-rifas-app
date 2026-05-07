@@ -12,11 +12,13 @@ export class SettingsService {
   private readonly settingsKey = 'ticket_rifas_settings';
 
   private readonly defaultSettings: AppSettings = {
-    businessName: '24 Ases',
+    businessName: '4 Ases',
     ticketValidityDays: 5,
     paperSize: '80mm',
     showLogo: true,
     showWatermark: true,
+    salesCutoffEnabled: true,
+    salesCutoffTime: '19:45',
     maxTicketsPerNumberPerDay: 5,
 
     twoDigitPrizes: [
@@ -66,39 +68,42 @@ export class SettingsService {
   }
 
   saveSettings(settings: AppSettings): void {
-    const updatedSettings: AppSettings = {
-      ...settings,
-      businessName: settings.businessName.trim() || '24 Ases',
-      ticketValidityDays: Number(settings.ticketValidityDays) || 5,
-      paperSize: settings.paperSize,
-      showLogo: settings.showLogo,
-      showWatermark: settings.showWatermark,
+  const updatedSettings: AppSettings = {
+    ...settings,
+    businessName: settings.businessName.trim() || '4 Ases',
+    ticketValidityDays: Number(settings.ticketValidityDays) || 5,
+    paperSize: settings.paperSize,
+    showLogo: settings.showLogo,
+    showWatermark: settings.showWatermark,
 
-      maxTicketsPerNumberPerDay:
-        Number(settings.maxTicketsPerNumberPerDay) > 0
-          ? Math.floor(Number(settings.maxTicketsPerNumberPerDay))
-          : 5,
+    maxTicketsPerNumberPerDay:
+      Number(settings.maxTicketsPerNumberPerDay) > 0
+        ? Math.floor(Number(settings.maxTicketsPerNumberPerDay))
+        : 5,
 
-      twoDigitPrizes: settings.twoDigitPrizes.map((prize) => ({
-        ...prize,
-        multiplier: Number(prize.multiplier) || 0,
-      })),
+    salesCutoffEnabled: Boolean(settings.salesCutoffEnabled),
+    salesCutoffTime: settings.salesCutoffTime || '19:45',
 
-      threeDigitPrizes: settings.threeDigitPrizes.map((prize) => ({
-        ...prize,
-        multiplier: Number(prize.multiplier) || 0,
-      })),
+    twoDigitPrizes: settings.twoDigitPrizes.map((prize) => ({
+      ...prize,
+      multiplier: Number(prize.multiplier) || 0,
+    })),
 
-      lotteryNote:
-        settings.lotteryNote?.trim() ||
-        'Este ticket juega con los números ganadores de la lotería.',
+    threeDigitPrizes: settings.threeDigitPrizes.map((prize) => ({
+      ...prize,
+      multiplier: Number(prize.multiplier) || 0,
+    })),
 
-      updatedAt: new Date().toISOString(),
-    };
+    lotteryNote:
+      settings.lotteryNote?.trim() ||
+      'Estos premios se juegan con los números ganadores de la lotería.',
 
-    this.storage.set(this.settingsKey, updatedSettings);
-    this.settingsSignal.set(updatedSettings);
-  }
+    updatedAt: new Date().toISOString(),
+  };
+
+  this.storage.set(this.settingsKey, updatedSettings);
+  this.settingsSignal.set(updatedSettings);
+}
 
   resetSettings(): void {
     const settings = {
@@ -111,30 +116,38 @@ export class SettingsService {
   }
 
   private normalizeSettings(settings: Partial<AppSettings> & any): AppSettings {
-    return {
-      ...this.defaultSettings,
-      ...settings,
+  return {
+    ...this.defaultSettings,
+    ...settings,
 
-      maxTicketsPerNumberPerDay:
-        Number(settings.maxTicketsPerNumberPerDay) > 0
-          ? Math.floor(Number(settings.maxTicketsPerNumberPerDay))
-          : this.defaultSettings.maxTicketsPerNumberPerDay,
+    maxTicketsPerNumberPerDay:
+      Number(settings.maxTicketsPerNumberPerDay) > 0
+        ? Math.floor(Number(settings.maxTicketsPerNumberPerDay))
+        : this.defaultSettings.maxTicketsPerNumberPerDay,
 
-      twoDigitPrizes:
-        settings.twoDigitPrizes?.length
-          ? settings.twoDigitPrizes
-          : settings.prizes?.length
-            ? settings.prizes
-            : this.defaultSettings.twoDigitPrizes,
+    salesCutoffEnabled:
+      settings.salesCutoffEnabled !== undefined
+        ? Boolean(settings.salesCutoffEnabled)
+        : this.defaultSettings.salesCutoffEnabled,
 
-      threeDigitPrizes:
-        settings.threeDigitPrizes?.length
-          ? settings.threeDigitPrizes
-          : this.defaultSettings.threeDigitPrizes,
+    salesCutoffTime:
+      settings.salesCutoffTime || this.defaultSettings.salesCutoffTime,
 
-      lotteryNote:
-        settings.lotteryNote?.trim() ||
-        this.defaultSettings.lotteryNote,
-    };
-  }
+    twoDigitPrizes:
+      settings.twoDigitPrizes?.length
+        ? settings.twoDigitPrizes
+        : settings.prizes?.length
+          ? settings.prizes
+          : this.defaultSettings.twoDigitPrizes,
+
+    threeDigitPrizes:
+      settings.threeDigitPrizes?.length
+        ? settings.threeDigitPrizes
+        : this.defaultSettings.threeDigitPrizes,
+
+    lotteryNote:
+      settings.lotteryNote?.trim() ||
+      this.defaultSettings.lotteryNote,
+  };
+}
 }

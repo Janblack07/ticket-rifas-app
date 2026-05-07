@@ -81,6 +81,13 @@ if (invalidTwoDigitPrize || invalidThreeDigitPrize) {
   this.errorMessage = 'Todos los premios deben tener un valor mayor a 0.';
   return;
 }
+if (
+  this.settings.salesCutoffEnabled &&
+  !/^([01]\d|2[0-3]):([0-5]\d)$/.test(this.settings.salesCutoffTime)
+) {
+  this.errorMessage = 'La hora límite debe tener formato válido, por ejemplo 19:45.';
+  return;
+}
 
   this.settingsService.saveSettings(this.settings);
   this.successMessage = 'Configuración guardada correctamente.';

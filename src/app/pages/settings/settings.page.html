@@ -103,6 +103,37 @@
             [(ngModel)]="settings.showWatermark"
           ></ion-toggle>
         </div>
+      <div class="toggle-row">
+  <div>
+    <strong>Bloquear ventas por horario</strong>
+    <span>
+      Impide generar tickets después de la hora límite.
+    </span>
+  </div>
+
+  <ion-toggle
+    name="salesCutoffEnabled"
+    ngDefaultControl
+    [(ngModel)]="settings.salesCutoffEnabled"
+  ></ion-toggle>
+</div>
+
+<div class="form-field">
+  <label class="form-label">Hora límite para vender tickets</label>
+  <ion-item>
+    <ion-input
+      name="salesCutoffTime"
+      ngDefaultControl
+      type="time"
+      [(ngModel)]="settings.salesCutoffTime"
+      placeholder="19:45"
+    ></ion-input>
+  </ion-item>
+
+  <p class="field-help">
+    Desde esta hora en adelante ya no se podrán generar tickets.
+  </p>
+</div>
       </div>
 
       <div class="section">

@@ -16,4 +16,6 @@ export interface AppSettings {
   lotteryNote: string;
 
   updatedAt: string;
+  salesCutoffEnabled: boolean;
+  salesCutoffTime: string;
 }

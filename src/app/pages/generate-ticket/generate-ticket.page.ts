@@ -23,6 +23,7 @@ import {
 import { TicketDigits } from '../../core/interfaces/ticket.interface';
 import { TicketService } from '../../core/services/ticket.service';
 import { SettingsService } from '../../core/services/settings.service';
+import { SalesScheduleService } from '../../core/services/sales-schedule.service';
 
 @Component({
   selector: 'app-generate-ticket',
@@ -42,11 +43,13 @@ import { SettingsService } from '../../core/services/settings.service';
     IonIcon,
   ],
 })
+
 export class GenerateTicketPage {
   private readonly router = inject(Router);
   private readonly ticketService = inject(TicketService);
 
   readonly settingsService = inject(SettingsService);
+  private readonly salesScheduleService = inject(SalesScheduleService);
 
   digits: TicketDigits = 2;
   number = '';
@@ -55,6 +58,7 @@ export class GenerateTicketPage {
 
   errorMessage = '';
 
+
   constructor() {
     addIcons({
       arrowBackOutline,
@@ -62,6 +66,14 @@ export class GenerateTicketPage {
       cashOutline,
       calendarOutline,
     });
+  }
+
+  get salesStatus() {
+  return this.salesScheduleService.getStatus();
+}
+
+  get canGenerateTickets(): boolean {
+    return this.salesStatus.isOpen;
   }
 
   get settings() {
@@ -94,6 +106,12 @@ export class GenerateTicketPage {
 
   generate(): void {
     this.errorMessage = '';
+    const salesStatus = this.salesScheduleService.getStatus();
+
+    if (!salesStatus.isOpen) {
+      this.errorMessage = salesStatus.message;
+      return;
+    }
 
     const numberError = this.ticketService.validateNumber(
       this.number,

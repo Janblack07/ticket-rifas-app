@@ -206,3 +206,39 @@
   font-size: 12px;
   font-weight: 900;
 }
+.sales-status {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(22, 163, 74, 0.1);
+  border: 1px solid rgba(22, 163, 74, 0.22);
+
+  strong {
+    display: block;
+    color: #15803d;
+    font-size: 13px;
+    font-weight: 950;
+  }
+
+  span {
+    display: block;
+    margin-top: 3px;
+    color: #166534;
+    font-size: 12px;
+    line-height: 1.35;
+    font-weight: 700;
+  }
+}
+
+.sales-status.sales-closed {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.22);
+
+  strong {
+    color: #dc2626;
+  }
+
+  span {
+    color: #991b1b;
+  }
+}

@@ -23,6 +23,17 @@
             Completa los datos para crear un ticket válido por
             {{ settings.ticketValidityDays }} días.
           </p>
+          <div
+  class="sales-status"
+  [class.sales-closed]="!canGenerateTickets"
+>
+  <strong>
+    {{ canGenerateTickets ? 'Ventas abiertas' : 'Ventas cerradas' }}
+  </strong>
+  <span>
+    {{ salesStatus.message }}
+  </span>
+</div>
         </div>
 
         <div class="title-icon">
@@ -140,9 +151,10 @@
       <ion-button
         expand="block"
         class="primary-button generate-button"
+        [disabled]="!canGenerateTickets"
         (click)="generate()"
       >
-        Generar ticket
+        {{ canGenerateTickets ? 'Generar ticket' : 'Ventas cerradas' }}
       </ion-button>
     </section>
   </div>
